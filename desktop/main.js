@@ -6,6 +6,16 @@ const fs = require('fs');
 const crypto = require('crypto');
 const { execFile, spawn } = require('child_process');
 const systemMemory = require('./system-memory');
+const { permitsVisualMicrophone } = require('./visual-microphone-permission');
+let visualMicrophoneGrant = null;
+function isTrustedVisualMicrophonePermission(webContents, origin, details) {
+  if (!webContents || webContents.isDestroyed() || !mainWindow || mainWindow.isDestroyed() || webContents !== mainWindow.webContents) return false;
+  return permitsVisualMicrophone(visualMicrophoneGrant, {
+    webContentsId: webContents.id, origin,
+    mediaType: details && details.mediaType,
+    mediaTypes: details && details.mediaTypes
+  });
+}
 const {
   WallpaperEngineLibrary,
   registerWallpaperEngineScheme,
@@ -1659,7 +1669,8 @@ function configureLocalAppPermissions() {
     const origin = requestingOrigin || (details && details.requestingUrl) || (webContents && webContents.getURL && webContents.getURL()) || '';
     if (permission === 'display-capture') return isTrustedWallpaperEngineDisplayCapturePermission(webContents, origin, details);
     if (permission === 'media') return isTrustedWallpaperEnginePreparationMediaPermission(webContents, origin, details)
-      || isTrustedGestureCameraMediaPermission(webContents, origin, details);
+      || isTrustedGestureCameraMediaPermission(webContents, origin, details)
+      || isTrustedVisualMicrophonePermission(webContents, origin, details);
     return LOCAL_APP_PERMISSION_ALLOWLIST.has(permission) && isLocalAppUrl(origin);
   });
   ses.setPermissionRequestHandler((webContents, permission, callback, details) => {
@@ -1670,7 +1681,8 @@ function configureLocalAppPermissions() {
     }
     if (permission === 'media') {
       callback(isTrustedWallpaperEnginePreparationMediaPermission(webContents, origin, details)
-        || isTrustedGestureCameraMediaPermission(webContents, origin, details));
+        || isTrustedGestureCameraMediaPermission(webContents, origin, details)
+        || isTrustedVisualMicrophonePermission(webContents, origin, details));
       return;
     }
     callback(LOCAL_APP_PERMISSION_ALLOWLIST.has(permission) && isLocalAppUrl(origin));
@@ -4990,6 +5002,12 @@ ipcMain.handle('mineradio-gesture-camera-request-permission', async (event) => {
   const grant = createGestureCameraPermissionGrant(event);
   if (!grant) return { ok: false, error: 'GESTURE_CAMERA_UNTRUSTED_SENDER' };
   return { ok: true, expiresAt: grant.expiresAt };
+});
+
+ipcMain.handle('mineradio-visual-microphone-permission', async (event) => {
+  if (!isTrustedMainWindowIpc(event)) return { ok: false, error: 'VISUAL_MICROPHONE_UNTRUSTED_SENDER' };
+  visualMicrophoneGrant = { webContentsId: event.sender.id, origin: event.sender.getURL(), expiresAt: Date.now() + 30000 };
+  return { ok: true };
 });
 
 ipcMain.handle('mineradio-wallpaper-update', async (event) => {

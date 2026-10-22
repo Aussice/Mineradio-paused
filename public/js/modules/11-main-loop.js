@@ -312,7 +312,7 @@ function animate() {
   uniforms.uTime.value += dt;
   if (isMainSceneCoveredBySplash()) {
     var splashWorkshopActive = window.MineradioSonicWorkshop && MineradioSonicWorkshop.isActive(fx);
-    if (window.MineradioSonicWorkshop) {
+    if (window.MineradioSonicWorkshop && !(window.MineradioVisualTheater && MineradioVisualTheater.isActive())) {
       MineradioSonicWorkshop.update(dt, {
         scene: scene,
         fx: fx,
@@ -649,7 +649,7 @@ function animate() {
   if (skullStepDt > 0) updateSkullParticleLayer(skullStepDt);
   if (perfProbe && perfProbe.markSince) perfProbe.markSince('visual.skull-particles', skullPerfStart);
   var sonicPerfStart = performance.now();
-  if (window.MineradioSonicTopography) {
+  if (window.MineradioSonicTopography && !(window.MineradioVisualTheater && MineradioVisualTheater.isActive())) {
     MineradioSonicTopography.update(dt, {
       scene: scene,
       fx: fx,
@@ -663,7 +663,7 @@ function animate() {
   }
   if (perfProbe && perfProbe.markSince) perfProbe.markSince('visual.sonic-topography', sonicPerfStart);
   var sonicWorkshopPerfStart = performance.now();
-  if (window.MineradioSonicWorkshop) {
+  if (window.MineradioSonicWorkshop && !(window.MineradioVisualTheater && MineradioVisualTheater.isActive())) {
     MineradioSonicWorkshop.update(dt, {
       scene: scene,
       fx: fx,
@@ -689,6 +689,20 @@ function animate() {
   }
 
   var rendererPerfStart = performance.now();
+  if (window.MineradioVisualTheater && MineradioVisualTheater.isActive()) {
+    MineradioVisualTheater.update({
+      playing: !!(playing && audio && !audio.paused),
+      frequencies: frequencyData,
+      sampleRate: audioCtx && audioCtx.sampleRate,
+      fftSize: analyser && analyser.fftSize,
+      energy: audioEnergy
+    });
+    // Keep the native lyric stage and 3D playlist shelf above the visual frame.
+    if (particles) particles.visible = false;
+    if (bloomParticles) bloomParticles.visible = false;
+    if (floatGroup) floatGroup.visible = false;
+    if (backCoverGroup) backCoverGroup.visible = false;
+  }
   renderer.render(scene, camera);
   if (perfProbe && perfProbe.markSince) perfProbe.markSince('renderer.render', rendererPerfStart);
   var frameCostMs = performance.now() - framePerfStart;

@@ -1,5 +1,7 @@
 # Mineradio
 
+> **Mineradio Visual fork**: this branch integrates Kaleidoscope Studio and Sound to Fireworks into the existing Windows player. Choose the visual stage in the titlebar. Build and usage instructions: [音乐视觉剧场](docs/VISUAL_THEATER.md). Original upstream project information follows below.
+
 > **项目状态：长期停更**
 >
 > 目前因个人原因，Mineradio 项目处于长期停更状态。感兴趣的个人玩家可随意使用本项目进行创作，也可以自行修改和修复 bug。希望各位玩得开心，也希望世界和平，享受我们的音乐。

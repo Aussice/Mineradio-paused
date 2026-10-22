@@ -70,6 +70,7 @@ function tickPresetTransition() {
 }
 function setPreset(p, opts) {
   opts = opts || {};
+  if (!opts.noSave && window.MineradioVisualTheater && MineradioVisualTheater.isActive()) MineradioVisualTheater.select('native');
   p = Math.max(0, Math.min(presetMeta.length - 1, Number(p) || 0));
   var prev = fx.preset;
   var changed = prev !== p;

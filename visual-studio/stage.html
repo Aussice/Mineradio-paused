@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Mineradio Visual · 音乐视觉剧场</title>
+    <meta name="description" content="让音乐驱动烟花与万花筒，所有声音分析均在本机进行。" />
+  </head>
+  <body>
+    <main id="stage" aria-label="音乐视觉舞台"></main>
+    <aside id="stage-panel" aria-label="视觉舞台控制" hidden>
+      <header><div><small>VISUAL THEATER</small><h1 id="stage-title">音乐烟花</h1></div><button id="close-panel" aria-label="收起控制台">×</button></header>
+      <p class="intro" id="stage-intro">把声音，交给夜空。</p>
+      <div class="source-buttons"><button id="demo-button">试听音乐</button><button id="mic-button">开启麦克风</button></div>
+      <p id="source-status" role="status">播放音乐后，烟花将随节奏绽放。</p>
+      <section id="fireworks-controls">
+        <div class="section-heading">声音与烟花</div>
+        <label class="range-row">声音灵敏度 <output id="sensitivity-value">65%</output><input id="sensitivity" type="range" min="15" max="100" value="65"></label>
+        <label class="range-row">烟花密度 <output id="intensity-value">65%</output><input id="intensity" type="range" min="10" max="100" value="65"></label>
+        <label class="range-row">泛光强度 <output id="bloom-value">70%</output><input id="bloom" type="range" min="0" max="100" value="70"></label>
+        <label class="range-row">重力 <output id="gravity-value">50%</output><input id="gravity" type="range" min="0" max="100" value="50"></label>
+        <label class="range-row">风速 <output id="wind-value">20%</output><input id="wind" type="range" min="0" max="100" value="20"></label>
+        <div class="section-heading">夜空配色</div>
+        <div class="palette-buttons" role="group" aria-label="烟花配色">
+          <button data-palette="0" aria-label="鎏金" title="鎏金" style="--swatch:#eeb970" aria-pressed="true"></button>
+          <button data-palette="1" aria-label="落樱" title="落樱" style="--swatch:#e8a4b7" aria-pressed="false"></button>
+          <button data-palette="2" aria-label="极光" title="极光" style="--swatch:#9cd6b5" aria-pressed="false"></button>
+          <button data-palette="3" aria-label="月蓝" title="月蓝" style="--swatch:#a6c5ec" aria-pressed="false"></button>
+        </div>
+        <div class="toggle-row"><label for="smoke">烟雾与余烬</label><input id="smoke" type="checkbox" role="switch" checked></div>
+        <div class="toggle-row"><label for="finale">高潮齐放</label><input id="finale" type="checkbox" role="switch" checked></div>
+        <div class="toggle-row"><label for="sound">远处的爆炸声</label><input id="sound" type="checkbox" role="switch"></div>
+        <button id="launch-finale" class="primary-button">点燃整个夜空</button>
+      </section>
+      <section id="kaleidoscope-controls" hidden>
+        <div class="section-heading">光影收藏</div><div id="art-presets"></div>
+        <label class="range-row">镜面数量 <output id="segments-value">8</output><input id="segments" type="range" min="3" max="20" value="8"></label>
+        <label class="range-row">流转速度 <output id="speed-value">0.52</output><input id="speed" type="range" min="0" max="1.5" step="0.01" value="0.52"></label>
+        <label class="range-row">音乐响应 <output id="reactivity-value">70%</output><input id="reactivity" type="range" min="0" max="100" value="70"></label>
+        <button id="open-editor" class="primary-button">打开完整万花筒工作室</button>
+      </section>
+      <footer><span>声音在此刻，成为光。</span><button id="capture-button" title="保存画面">保存画面 ↗</button></footer>
+    </aside>
+    <div id="stage-caption"><span id="stage-mode-label">SOUND TO FIREWORKS</span><p id="stage-hint">点击夜空，点燃一朵烟花</p></div>
+    <div id="stage-error" role="alert" hidden></div>
+    <script type="module" src="/src/stage.ts"></script>
+  </body>
+</html>

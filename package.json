@@ -1,21 +1,25 @@
 {
-  "name": "mineradio",
-  "productName": "Mineradio",
-  "version": "2.2.0",
-  "description": "Windows 沉浸式音乐播放器，融合桌面模式、歌词舞台、粒子视觉和 3D 歌单架。",
+  "name": "mineradio-visual",
+  "productName": "Mineradio Visual",
+  "version": "2.2.1",
+  "description": "基于 Mineradio 的 Windows 音乐视觉播放器，整合音乐烟花与万花筒工作室。",
   "author": "Mineradio",
   "license": "GPL-3.0-only",
   "main": "desktop/main.js",
   "private": true,
   "scripts": {
     "start": "electron .",
-    "build:win": "electron-builder --win nsis",
-    "build:win:dir": "electron-builder --win dir",
-    "build:win:internal-beta": "electron-builder --config electron-builder.internal-beta.json --win nsis --publish never"
+    "build:win": "npm run build:visual && electron-builder --win nsis --publish never",
+    "build:win:dir": "npm run build:visual && electron-builder --win dir --publish never",
+    "build:win:internal-beta": "electron-builder --config electron-builder.internal-beta.json --win nsis --publish never",
+    "build:visual": "tsc -p visual-studio/tsconfig.app.json --noEmit && vite build --config visual-studio/vite.config.ts",
+    "dev:visual": "vite --config visual-studio/vite.config.ts --host 127.0.0.1",
+    "prestart": "npm run build:visual",
+    "test:visual": "node --test tests/visual-theater-permission.test.js"
   },
   "build": {
-    "appId": "com.mineradio.desktop",
-    "productName": "Mineradio",
+    "appId": "com.aussice.mineradio.visual",
+    "productName": "Mineradio Visual",
     "directories": {
       "output": "dist",
       "buildResources": "build"
@@ -47,7 +51,7 @@
     ],
     "asar": false,
     "win": {
-      "executableName": "Mineradio",
+      "executableName": "Mineradio Visual",
       "icon": "build/icon.ico",
       "signAndEditExecutable": false,
       "target": [
@@ -65,36 +69,33 @@
       "allowToChangeInstallationDirectory": false,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "Mineradio",
+      "shortcutName": "Mineradio Visual",
       "installerIcon": "build/icon.ico",
       "uninstallerIcon": "build/icon.ico",
       "installerSidebar": "build/installerSidebar.bmp",
       "uninstallerSidebar": "build/installerSidebar.bmp",
       "installerHeader": "build/installerHeader.bmp",
-      "include": "build/installer.nsh",
-      "artifactName": "Mineradio-${version}-Setup.${ext}"
+      "include": "build/visual-installer.nsh",
+      "artifactName": "Mineradio-Visual-${version}-Setup.${ext}"
     },
     "publish": [
       {
         "provider": "github",
-        "owner": "XxHuberrr",
-        "repo": "Mineradio"
+        "owner": "Aussice",
+        "repo": "Mineradio-paused"
       }
     ]
   },
   "mineradio": {
     "update": {
       "provider": "github",
-      "owner": "XxHuberrr",
-      "repo": "Mineradio",
+      "owner": "Aussice",
+      "repo": "Mineradio-paused",
       "preview": false,
-      "preferMirrors": true,
-      "mirrors": [
-        "https://gh.llkk.cc/",
-        "https://ghfast.top/",
-        "https://gh-proxy.com/"
-      ]
-    }
+      "preferMirrors": false,
+      "mirrors": []
+    },
+    "runtimeName": "Mineradio Visual"
   },
   "dependencies": {
     "gsap": "^3.15.0",
@@ -109,8 +110,18 @@
     "music-metadata": "11.14.0"
   },
   "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.185.0",
+    "@vitejs/plugin-react": "^6.1.2",
     "electron": "^42.4.1",
     "electron-builder": "^26.15.3",
-    "rcedit": "^5.0.2"
+    "lucide-react": "^1.61.0",
+    "rcedit": "^5.0.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "three": "^0.185.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.1.0"
   }
 }

@@ -1,5 +1,9 @@
 # NOTICE
 
+## Mineradio Visual fork
+
+This modified edition adds Sound to Fireworks and the complete local Kaleidoscope Studio, including its shader editor and presets, under `visual-studio/`. It retains Mineradio's original player design and provider integrations and identifies itself as Mineradio Visual with separate installation and user-data identities. Visual material textures are from ambientCG (CC0); see `visual-studio/sucai/MANIFEST.md`. The bundled modern Three.js, React and Lucide libraries retain their respective licenses. The existing upstream notices follow.
+
 Mineradio 使用了以下第三方项目或服务。各项目版权归其原作者所有。
 
 ## Third-party Libraries

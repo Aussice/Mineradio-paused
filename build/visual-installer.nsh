@@ -1,0 +1,7 @@
+!define MINERADIO_INSTALL_DIR_NAME "Mineradio Visual"
+!define MINERADIO_INSTALL_DIR_NAME_LOWER "mineradio-visual"
+!define MINERADIO_INSTALL_MARKER ".mineradio-visual-install-root"
+!define MINERADIO_MARKER_APP_ID "com.aussice.mineradio.visual"
+!define MINERADIO_INSTALL_BRAND "MINERADIO VISUAL"
+!define MINERADIO_INSTALL_TITLE "Mineradio Visual 安装"
+!include "${BUILD_RESOURCES_DIR}\installer.nsh"

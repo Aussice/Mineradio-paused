@@ -66,4 +66,6 @@ output/
 tmp/
 *.png.tmp
 verification/
+public/visual-studio/
+visual-studio/node_modules/
 screenshots/
